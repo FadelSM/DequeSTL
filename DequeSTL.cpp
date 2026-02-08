@@ -3,7 +3,33 @@
 using namespace std;
 
 void printKMax(int arr[], int n, int k){
-	//Write your code here.
+	deque<int> dq;
+
+    // Proses k elemen pertama
+    for (int i = 0; i < k; i++) {
+        while (!dq.empty() && arr[i] >= arr[dq.back()])
+            dq.pop_back();
+        dq.push_back(i);
+    }
+
+    // Proses sisa elemen
+    for (int i = k; i < n; i++) {
+        // Print maksimum window sebelumnya
+        cout << arr[dq.front()] << " ";
+
+        // Hapus index yang keluar dari window
+        while (!dq.empty() && dq.front() <= i - k)
+            dq.pop_front();
+
+        // Hapus semua elemen lebih kecil dari elemen sekarang
+        while (!dq.empty() && arr[i] >= arr[dq.back()])
+            dq.pop_back();
+
+        dq.push_back(i);
+    }
+
+    // Print maksimum window terakhir
+    cout << arr[dq.front()] << endl;
 }
 
 int main(){
